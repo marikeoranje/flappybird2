@@ -17,8 +17,8 @@ var canvas_w = 320;
 var canvas_h = 480
 
 let resizeBird = function(){
-    canvas_w = window.innerWidth - 4;
-    canvas_h = window.innerHeight - 4;
+    canvas_w = window.innerWidth - 20;
+    canvas_h = window.innerHeight - 20;
     let ratio = 320 / 480;
     if(canvas_h < canvas_w / ratio)
         canvas_w = canvas_h * ratio;
