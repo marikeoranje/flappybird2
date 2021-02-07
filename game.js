@@ -1,5 +1,5 @@
 // SELECT CVS
-const cvs = document.getElementById("bird");
+var cvs = document.getElementById("bird");
 const ctx = cvs.getContext("2d");
 
 // GAME VARS AND CONSTS
@@ -9,6 +9,32 @@ const DEGREE = Math.PI/180;
 // LOAD SPRITE IMAGE
 const sprite = new Image();
 sprite.src = "img/spriteoriginal.png";
+
+// RESIZE
+var w = 320;
+var h = 480;
+var canvas_w = 320;
+var canvas_h = 480
+
+let resizeBird = function(){
+    canvas_w = window.innerWidth - 4;
+    canvas_h = window.innerHeight - 4;
+    let ratio = 320 / 480;
+    if(canvas_h < canvas_w / ratio)
+        canvas_w = canvas_h * ratio;
+    else 
+        canvas_h = canvas_w / ratio;
+    cvs.width = w;
+    cvs.height = h;
+
+    cvs.style.width = '' + canvas_w + 'px';
+    cvs.style.heigth = '' + canvas_h + 'px';
+}
+resizeBird();
+
+window.addEventListener('resize', function(){
+    resizeBird();
+})
 
 // LOAD SOUNDS
 const SCORE_S = new Audio();
@@ -36,10 +62,10 @@ const state = {
 
 // START BUTTON COORD
 const startBtn = {
-    x : 120,
-    y : 263,
-    w : 83,
-    h : 29
+    x : 0,
+    y : 0,
+    w : canvas_w,
+    h : canvas_h
 }
 
 // CONTROL THE GAME
