@@ -345,23 +345,23 @@ const score= {
     value : 0,
     
     draw : function(){
-        ctx.fillStyle = "#FFF";
+        ctx.fillStyle = "black";
         ctx.strokeStyle = "#000";
         
         if(state.current == state.game){
             ctx.lineWidth = 2;
-            ctx.font = "35px Teko";
+            ctx.font = "35px Arial";
             ctx.fillText(this.value, cvs.width/2, 50);
             ctx.strokeText(this.value, cvs.width/2, 50);
             
         }else if(state.current == state.over){
             // SCORE VALUE
-            ctx.font = "25px Teko";
-            ctx.fillText(this.value, 225, 186);
-            ctx.strokeText(this.value, 225, 186);
+            ctx.font = "25px Arial";
+            ctx.fillText(this.value, 207, 186);
+            ctx.strokeText(this.value, 207, 186);
             // BEST SCORE
-            ctx.fillText(this.best, 225, 228);
-            ctx.strokeText(this.best, 225, 228);
+            ctx.fillText(this.best, 207, 228);
+            ctx.strokeText(this.best, 207, 228);
         }
     },
     
