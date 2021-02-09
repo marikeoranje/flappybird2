@@ -68,6 +68,14 @@ const startBtn = {
     h : canvas_h
 }
 
+// CTA BUTTON COORD
+const ctaBtn = {
+    x : 120 / 320 * canvas_w,
+    y : 263 / 480 * canvas_h,
+    w : 83 / 320 * canvas_w,
+    h : 29 / 480 * canvas_h
+}
+
 // CONTROL THE GAME
 cvs.addEventListener("click", function(evt){
     switch(state.current){
