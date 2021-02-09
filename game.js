@@ -276,7 +276,7 @@ const pipes = {
     h : 400,
     gap : 120,
     maxYPos : -150,
-    dx : 2,
+    dx : 2.5,
     
     draw : function(){
         for(let i  = 0; i < this.position.length; i++){
@@ -296,7 +296,7 @@ const pipes = {
     update: function(){
         if(state.current !== state.game) return;
         
-        if(frames%100 == 0){
+        if(frames%90 == 0){
             this.position.push({
                 x : cvs.width,
                 y : this.maxYPos * ( Math.random() + 1)
