@@ -2,13 +2,10 @@
 var cvs = document.getElementById("bird");
 const ctx = cvs.getContext("2d");
 
-// GAME VARS AND CONSTS
-let frames = 0;
-const DEGREE = Math.PI/180;
-
 // LOAD SPRITE IMAGE
 const sprite = new Image();
 sprite.src = "img/spriteoriginal.png";
+
 
 // RESIZE
 var w = 320;
@@ -35,6 +32,10 @@ resizeBird();
 window.addEventListener('resize', function(){
     resizeBird();
 })
+
+// GAME VARS AND CONSTS
+let frames = 0;
+const DEGREE = Math.PI/180;
 
 // LOAD SOUNDS
 const SCORE_S = new Audio();
@@ -99,6 +100,7 @@ cvs.addEventListener("click", function(evt){
                 break;
                 } else {
                     pipes.reset();
+                    food.reset();
                     bird.speedReset();
                     score.reset();
                     state.current = state.getReady;
@@ -167,7 +169,7 @@ const bird = {
     
     frame : 0,
     
-    gravity : 0.2,
+    gravity : 0.24,
     jump : 4,
     speed : 0,
     rotation : 0,
@@ -225,6 +227,7 @@ const bird = {
     }
 }
 
+
 // GET READY MESSAGE
 const getReady = {
     sX : 0,
@@ -275,7 +278,7 @@ const pipes = {
     w : 53,
     h : 400,
     gap : 120,
-    maxYPos : -150,
+    maxYPos : -175,
     dx : 2.5,
     
     draw : function(){
@@ -296,7 +299,7 @@ const pipes = {
     update: function(){
         if(state.current !== state.game) return;
         
-        if(frames%90 == 0){
+        if(frames%100 == 0){
             this.position.push({
                 x : cvs.width,
                 y : this.maxYPos * ( Math.random() + 1)
@@ -308,17 +311,11 @@ const pipes = {
             let bottomPipeYPos = p.y + this.h + this.gap;
             
             // COLLISION DETECTION
-            // TOP PIPE
-            if(bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + this.w && bird.y + bird.radius > p.y && bird.y - bird.radius < p.y + this.h){
+            if(bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + this.w && bird.y + bird.radius > p.y && bird.y - bird.radius < p.y + this.h || (bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + this.w && bird.y + bird.radius > bottomPipeYPos && bird.y - bird.radius < bottomPipeYPos + this.h)){
                 state.current = state.over;
                 HIT.play();
             }
-            // BOTTOM PIPE
-            if(bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + this.w && bird.y + bird.radius > bottomPipeYPos && bird.y - bird.radius < bottomPipeYPos + this.h){
-                state.current = state.over;
-                HIT.play();
-            }
-            
+
             // MOVE THE PIPES TO THE LEFT
             p.x -= this.dx;
             
@@ -333,6 +330,53 @@ const pipes = {
         }
     },
     
+    reset : function(){
+        this.position = [];
+    }
+    
+}
+
+// FOOD
+const food = {
+    position : [],
+    sX : 277,
+    sY : 112,
+    w : 28,
+    h : 28,
+    dxx : 2.5,
+    maxYPos : 150,
+    draw : function(){
+        for(let i  = 0; i < this.position.length; i++){
+            let q = this.position[i];
+            let topYPos = q.y;
+            ctx.drawImage(sprite, this.sX, this.sY, this.w, this.h, q.x, topYPos, this.w, this.h);  
+        }
+    },
+    
+    update: function(){
+        if(state.current !== state.game) return;
+        
+        if(frames%300 == 0){
+            this.position.push({
+                x : cvs.width/2 + 53,
+                y : this.maxYPos * ( Math.random() + 1)
+            });
+        }
+        for(let i = 0; i < this.position.length; i++){
+            let q = this.position[i];
+            q.x -= this.dxx;
+            if(bird.x + bird.radius > q.x && bird.x - bird.radius < q.x + this.w && bird.y + bird.radius > q.y && bird.y - bird.radius < q.y + this.h){
+                this.position.shift();
+                score.value += 5;
+                SCORE_S.play();
+                score.best = Math.max(score.value, score.best);
+                localStorage.setItem("best", score.best);
+            };
+            if(q.x + this.w <= 0){
+                this.position.shift();
+            }
+        }
+    },
     reset : function(){
         this.position = [];
     }
@@ -356,7 +400,7 @@ const score= {
             
         }else if(state.current == state.over){
             // SCORE VALUE
-            ctx.font = "25px Arial";
+            ctx.font = "23px Arial";
             ctx.fillText(this.value, 207, 186);
             ctx.strokeText(this.value, 207, 186);
             // BEST SCORE
@@ -377,6 +421,7 @@ function draw(){
     
     bg.draw();
     pipes.draw();
+    food.draw();
     fg.draw();
     bird.draw();
     getReady.draw();
@@ -389,6 +434,7 @@ function update(){
     bird.update();
     fg.update();
     pipes.update();
+    food.update();
 }
 
 // LOOP
