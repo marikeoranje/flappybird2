@@ -86,13 +86,17 @@ cvs.addEventListener("click", function(evt){
             let clickY = evt.clientY - rect.top;
             
             // CHECK IF WE CLICK ON THE START BUTTON
-            if(clickX >= startBtn.x && clickX <= startBtn.x + startBtn.w && clickY >= startBtn.y && clickY <= startBtn.y + startBtn.h){
-                pipes.reset();
-                bird.speedReset();
-                score.reset();
-                state.current = state.getReady;
-            }
-            break;
+            if(clickX >= ctaBtn.x && clickX <= ctaBtn.x + ctaBtn.w && clickY >= ctaBtn.y && clickY <= ctaBtn.y + ctaBtn.h){
+                window.location.href="https://www.vvd.nl/word-lid/";
+                break;
+                } else {
+                    pipes.reset();
+                    bird.speedReset();
+                    score.reset();
+                    state.current = state.getReady;
+                    break;
+            };
+            
     }
 });
 
