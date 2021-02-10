@@ -179,7 +179,6 @@ const bird = {
         
         ctx.save();
         ctx.translate(this.x, this.y);
-        ctx.rotate(this.rotation);
         ctx.drawImage(sprite, bird.sX, bird.sY, this.w, this.h,- this.w/2, - this.h/2, this.w, this.h);
         
         ctx.restore();
@@ -199,7 +198,6 @@ const bird = {
         
         if(state.current == state.getReady){
             this.y = 150; // RESET POSITION OF THE BIRD AFTER GAME OVER
-            this.rotation = 0 * DEGREE;
         }else{
             this.speed += this.gravity;
             this.y += this.speed;
@@ -214,12 +212,8 @@ const bird = {
             
             // IF THE SPEED IS GREATER THAN THE JUMP MEANS THE BIRD IS FALLING DOWN
             if(this.speed >= this.jump){
-                this.rotation = 90 * DEGREE;
                 this.frame = 1;
-            }else{
-                this.rotation = -25 * DEGREE;
-            }
-        }
+        }   }
         
     },
     speedReset : function(){
